@@ -88,7 +88,7 @@ class Frontend(Player):
         print(f"{self.id}의 웹표준 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-
+            self.drop_item()  # 몬스터가 죽으면  드랍
      # 프론트엔드 마법 공격
 
     def magic_attack(self, target):
@@ -102,7 +102,7 @@ class Frontend(Player):
         print(f"{self.id}의 리액트 공격! {target.id}에게 {damage}의 마법데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-
+            self.drop_item()  # 몬스터가 죽으면  드랍
 
 # 직업 2 : 백엔드
 
@@ -120,7 +120,7 @@ class Backend(Player):
         print(f"{self.id}의 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-
+            self.drop_item()  # 몬스터가 죽으면  드랍
     # 백엔드 마법 공격
 
     def magic_attack(self, target):
@@ -134,7 +134,7 @@ class Backend(Player):
         print(f"{self.id}의 장고 공격! {target.id}에게 {damage}의 마법데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-
+            self.drop_item()  # 몬스터가 죽으면  드랍
 # 직업 3 : 풀스택 (히든)
 
 
@@ -151,7 +151,7 @@ class Fullstack(Player):
         print(f"{self.id}의 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-
+            self.drop_item()  # 몬스터가 죽으면  드랍
     # 풀스택 마법 공격
 
     def magic_attack(self, target):
@@ -166,7 +166,7 @@ class Fullstack(Player):
         print(f"{self.id}의 장고 공격! {target.id}에게 {damage}의 마법데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-
+            self.drop_item()  # 몬스터가 죽으면  드랍
 
 # front = Frontend(Player)()
 
@@ -240,15 +240,23 @@ class Monster():
         exp_gain = monster.exp
         return exp_gain
 
-    def get_equipment():
-        equipment_names = ["Red_portion", "Blue_portion",
-                           "Mac_book", "Keyboard", "Mouse"]
-        equipment_name = random.choice(equipment_names)
+    def drop_item(self):  # 몬스터가 죽으면 드랍 아이템 , 확률
+        items = ['RedPortion', 'BluePortion', 'MacBook',
+                 'Keyboard', 'Mouse', 'ChatGpt']  # 드랍 아이템 종류
+        probabilities = [0.2, 0.2, 0.15, 0.15, 0.15, 0.15]  # 드랍 확률
 
+        for i in range(len(items)):
+            if random.random() < probabilities[i]:
+                print(f"{self.id}이(가) {items[i]}을(를) 떨어뜨렸습니다.")
+                return items[i]
+        return None
+
+    # 몬스터를 죽이면 랜덤으로 무기 나오게 하기 (확률)
 
 # 마을이 3개 마을마다 던전이 3개
 # 마을 클래스 하나 던전 클래스 하나 를 나눠쓰면 되지 않을까?
 # 타운과 던전이 몬스터 플레이어 상속받아야할 듯
+
 
 class Town(Player, Monster):
     def __init__(self, town_name, dungeon_name):
@@ -336,7 +344,7 @@ class Dungeon():
 # else:
 #     print("===== 번호를 다시 선택해주세요. =====")
 
-class Equipment():
+class Equipment():  # 장비 부모 객체
     def __init__(self, name, hp, mp, html, javascript, python):
         self.name = name
         self.hp = hp
@@ -345,19 +353,17 @@ class Equipment():
         self.javascript = javascript
         self.python = python
 
-#  포션은 혹시몰라서 두개 만들었습니다.
 
-
-class Red_portion(Equipment):
+class RedPortion(Equipment):  # 체력 포션
     def __init__(self, name, hp):
         super().__init__(name, hp)
 
     def use_portion(self):
-        self.hp += 100
+        self.hp += 100  # 체력 100만큼 증가
         print(f"{self.name}을(를) 사용하여 체력이 100씩 회복되었습니다.")
 
 
-class Blue_portion(Equipment):
+class BluePortion(Equipment):  # 마나 포션
     def __init__(self, name, mp):
         super().__init__(name, mp)
 
@@ -369,15 +375,15 @@ class Blue_portion(Equipment):
 # portion1.use_potion()                # 포션 사용하여 체력과 마나 회복
 
 
-class Mac_book(Equipment):
+class MacBook(Equipment):  # 맥북 무기
     def __init__(self, name, html, javascript, python):
         super().__init__(name, html, javascript, python)
         self.html += 15
-        self.javascript += 5
+        self.javascript += 5  # 무기 스탯
         self.python += 5
 
 
-class Keyboard(Equipment):
+class Keyboard(Equipment):  # 키보드 무기
     def __init__(self, name, html, javascript, python):
         super().__init__(name, html, javascript, python)
         self.html += 5
@@ -385,9 +391,25 @@ class Keyboard(Equipment):
         self.python += 5
 
 
-class Mouse(Equipment):
+class Mouse(Equipment):  # 마우스 무기
     def __init__(self, name, html, javascript, python):
         super().__init__(name, html, javascript, python)
         self.html += 5
         self.javascript += 5
         self.python += 15
+
+
+class ChatGpt(Equipment):  # 쥐피티 무기
+    def __init__(self, name, html, javascript, python):
+        super().__init__(name, html, javascript, python)
+        self.html += 20
+        self.javascript += 20
+        self.python += 20
+
+# 무기 드랍 확률 만들어보기
+# red_portion = RedPortion() 30%
+# blue_portion = BluePortion() 25%
+# mac_book = MacBook() 10%
+# keyboard = Keyboard() 10%
+# mouse = Mouse() 10%
+# chat_gpt = ChatGpt() 5%
