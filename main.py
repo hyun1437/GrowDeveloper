@@ -101,7 +101,7 @@ class Frontend(Player):
         print(f"{self.id}의 웹표준 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-            self.drop_item()  # 몬스터가 죽으면  드랍
+            Monster.drop_item(self)  # 몬스터가 죽으면  드랍
      # 프론트엔드 마법 공격
 
     def magic_attack(self, target):
@@ -115,7 +115,7 @@ class Frontend(Player):
         print(f"{self.id}의 리액트 공격! {target.id}에게 {damage}의 마법데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-            self.drop_item()  # 몬스터가 죽으면  드랍
+            Monster.drop_item(self)  # 몬스터가 죽으면  드랍
 
 # 직업 2 : 백엔드
 
@@ -260,7 +260,7 @@ class Monster():
 
         for i in range(len(items)):
             if random.random() < probabilities[i]:
-                print(f"{self.id}이(가) {items[i]}을(를) 떨어뜨렸습니다.")
+                print(f"{self.id}이(가) {items[i]}을(를) 획득하였습니다.")
                 return items[i]
         return None
 
