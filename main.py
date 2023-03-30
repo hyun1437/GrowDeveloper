@@ -17,27 +17,28 @@ import random
 # 스탯 2 Javascript
 # 스탯 3 Python
 
-
-class Player:
-    def __init__(self, id, hp, mp, level, exp, html, javascript, python):
+# init함수에 yes or no 기능을 만들어서 마음에 드는 스탯이 나올때까지 스탯을 굴리게 만들었습니다.
+class Player:   # init함수가 받는 인자를 이름만 받도록 변경, 스텟은 전부 랜덤에, 경험치와 레벨은 고정이라 저렇게 했습니다.
+    def __init__(self, id):
         self.id = id
-        self.hp = hp
-        self.max_hp = hp
-        self.mp = mp
-        self.max_mp = mp
-        self.level = level
-        self.exp = exp
-        self.html = html  # 스탯 1. 기본공격
-        self.javascript = javascript  # 스탯 2.마법공격 - front
-        self.python = python  # 스탯 3. 마법공격 - back
+        self.hp = random.randint(50, 150)
+        self.max_hp = self.hp
+        self.mp = random.randint(50, 150)
+        self.max_mp = self.mp
+        self.level = 1
+        self.exp = 0 
+        self.html = random.randint(5, 15)  # 스탯 1. 기본공격
+        self.javascript = random.randint(5, 15)  # 스탯 2.마법공격 - front
+        self.python = random.randint(5, 15)  # 스탯 3. 마법공격 - back
         print(f"\n{self.id}이(가) 생성 되었습니다.")
         print(f"""
             LV : {self.level}
-            HP: {self.hp}|{self.max_hp}
-            MP: {self.mp}|{self.max_mp}
+            HP: {self.hp} | {self.max_hp}
+            MP: {self.mp} | {self.max_mp}
             EXP : {self.exp}
-            Html: {self.html}|Javascript: {self.javascript}|Python:{self.python}
+            Html:{self.html} | Javascript:{self.javascript} | Python:{self.python}
             """)
+        
 
     def show_status(self):
         print(f"""
@@ -46,6 +47,9 @@ class Player:
             MP{self.mp}/{self.max_mp}
             """)
         # 이걸 여기 놓고 같이 쓰면 어떨까요??? 위에 프린트는 지우구요요 흠!
+        # 같이 쓰는 거 굉장히 좋다고 생각합니다. 만약 스탯 다시 굴리는 기능이 없다면 지워도 괜찮을것 같습니다.
+        # 스탯 다시 굴리는 기능을 쓴다면 양쪽에 다 있어야 할 것 같습니다.
+        # 아니면 여기서 말고 레벨업 할때만 레벨 경험치 능력치를 보여주는건 어떨까요?
         # print(f"""
         #     LV : {self.level}
         #     HP: {self.hp}|{self.max_hp}
@@ -76,14 +80,23 @@ class Player:
 
 
 class Frontend(Player):
-    def __init__(self, frontend):
+    def __init__(self, id, hp, mp, html, javascript, python):
         # super(Frontend, self).__init__()
-        self.frontend = frontend
+        self.id = id
+        self.hp = hp
+        self.max_hp = self.hp
+        self.mp = mp
+        self.max_mp = self.mp
+        self.level = 1
+        self.exp = 0 
+        self.html = html
+        self.javascript = javascript 
+        self.python = python
 
      # 프론트엔드 일반 공격
 
     def attack(self, target):
-        damage = random.randint(self.html * 0.9, self.html * 1.3)
+        damage = random.randint(int(self.html * 0.8), int(self.html * 1.3))
         target.hp = max(target.hp - damage, 0)
         print(f"{self.id}의 웹표준 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
@@ -207,11 +220,11 @@ class Fullstack(Player):
 #         return "{}로 선택했습니다.".format(self.weapon)
 
 class Monster():
-    def __init__(self, id, power, hp, max_hp, exp):
+    def __init__(self, id, hp, power, exp):
         self.id = id
-        self.power = power
         self.hp = hp
-        self.max_hp = max_hp
+        self.max_hp = self.hp
+        self.power = power
         self.exp = exp
 
     def attack(self, target):  # 몬스터 데미지 80%~ 120% 변경
@@ -306,6 +319,8 @@ class Town(Player, Monster):
 # 11. 플레이어가 죽었다면 마을로 돌아간다.
 
 # 밤8시 서경 : 플레이어 > 타운 > 던전 순으로 상속받게 작업할것임
+
+### 던전 클래스 만들어놨는데 불완전합니다~~
 class Dungeon():
     def __init__(self, name):
         self.name = name
@@ -314,10 +329,17 @@ class Dungeon():
     def enter(self):
         print(f"{self.name}에 입장하셨습니다.")
 
-    def append_monsters(self, *monsters):
-        for monster in monsters:
-            self.monsters.append(monster)
+    def append_monsters(self, *monster):
+        mon_list = [monster]
+        for m in mon_list:
+            self.monsters.append(m)
 
+    def get_monsters(self):
+        return self.monsters
+    
+    def remove_monster(self, monster):
+        self.monsters.remove(monster)
+#####
 
 # # # 아이디 입력
 # print("===== 이름을 입력해주세요. =====")
@@ -406,10 +428,62 @@ class ChatGpt(Equipment):  # 쥐피티 무기
         self.javascript += 20
         self.python += 20
 
+
+# 인벤토리를 클래스로 만들어서 아이템을 추가하고 
+
 # 무기 드랍 확률 만들어보기
 # red_portion = RedPortion() 30%
 # blue_portion = BluePortion() 25%
 # mac_book = MacBook() 10%
 # keyboard = Keyboard() 10%
-# mouse = Mouse() 10%
+# mouse = Mouse() 10% 
 # chat_gpt = ChatGpt() 5%
+
+
+
+
+# 서경이의 인벤토리
+
+# class Inventory:
+#     def __init__(self):
+#         self.items = []
+
+#     def add_item(self, item):
+#         if item in self.items:
+#             self.items[item] += 1
+#         else:
+#             self.items[item] = 1
+
+#         # 만약 아이템이 없다면 아이템을
+#         # 만약 아이템의 갯수가 하나 증가하면 value 의 숫자를 +1씩 증가시킨다.
+#         # 아이템값이 key 이름 :value 갯수 로 들어가야 할 듯
+
+#     def remove_item(self, item):
+#         if self.items[item] > 1:
+#             self.items[item] -= 1
+#         else:
+#             self.items.remove(item)
+#         # 아이템을 사용한다면 value의 숫자를 -1씩 감소시킨다
+#         # 아이템의 벨류 == 0 아이템을 지운다.
+
+#     def view_items(self):
+#         for item in self.items:
+#             print(f'{item.name}: {item.quantity}')
+
+
+# inventory = Inventory()
+
+# redportion = RedPortion("레드포션", 50)
+# blueportion = BluePortion("블루포션", 50)
+# macbook = MacBook()
+# mouse = Mouse()
+# keyboard = Keyboard()
+# chatgpt = ChatGpt()
+
+
+# # print(f"{}의 인벤토리를 확인합니다.")
+# inventory.view_items()
+
+
+# inventory.add_item(redportion)
+# inventory.view_items()
