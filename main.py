@@ -101,7 +101,9 @@ class Frontend(Player):
         print(f"{self.id}의 웹표준 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-            self.drop_item()  # 몬스터가 죽으면  드랍
+            # 0330 혀나님
+            target.drop_item(self)  # 몬스터가 죽으면  드랍
+            #Monster
      # 프론트엔드 마법 공격
 
     def magic_attack(self, target):
@@ -110,30 +112,40 @@ class Frontend(Player):
             print("마나가 부족합니다.")
             return
 
-        damage = random.randint(self.javascript * 0.8, self.javascript * 1.2)
+        damage = random.randint(int(self.javascript * 0.8), int(self.javascript * 1.2))
         target.hp = max(target.hp - damage, 0)
         print(f"{self.id}의 리액트 공격! {target.id}에게 {damage}의 마법데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-            self.drop_item()  # 몬스터가 죽으면  드랍
+            # 0330 혀나님
+            target.drop_item(self)  # 몬스터가 죽으면  드랍
 
 # 직업 2 : 백엔드
 
 
 class Backend(Player):
-    def __init__(self, backend):
+    def __init__(self, id, hp, mp, html, javascript, python):
         # super(Backend, self).__init__()
-        self.backend = backend
+        self.id = id
+        self.hp = hp
+        self.max_hp = self.hp
+        self.mp = mp
+        self.max_mp = self.mp
+        self.level = 1
+        self.exp = 0 
+        self.html = html
+        self.javascript = javascript 
+        self.python = python
 
     # 백엔드 일반 공격
 
     def attack(self, target):
-        damage = random.randint(self.html * 0.7, self.html * 1.2)
+        damage = random.randint(int(self.html * 0.8), int(self.html * 1.3))
         target.hp = max(target.hp - damage, 0)
         print(f"{self.id}의 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-            self.drop_item()  # 몬스터가 죽으면  드랍
+            target.drop_item(self)  # 몬스터가 죽으면  드랍
     # 백엔드 마법 공격
 
     def magic_attack(self, target):
@@ -142,29 +154,41 @@ class Backend(Player):
             print("마나가 부족합니다.")
             return
 
-        damage = random.randint(self.javascript * 1.1, self.javascript * 1.3)
+        damage = random.randint(int(self.javascript * 0.8), int(self.javascript * 1.2))
         target.hp = max(target.hp - damage, 0)
         print(f"{self.id}의 장고 공격! {target.id}에게 {damage}의 마법데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-            self.drop_item()  # 몬스터가 죽으면  드랍
+            target.drop_item(self)  # 몬스터가 죽으면  드랍
+
+
 # 직업 3 : 풀스택 (히든)
 
 
 class Fullstack(Player):
-    def __init__(self, fullstack):
+    def __init__(self, id, hp, mp, html, javascript, python):
         # super(Fullstack, self).__init__()
-        self.fullstack = fullstack
+        self.id = id
+        self.hp = hp
+        self.max_hp = self.hp
+        self.mp = mp
+        self.max_mp = self.mp
+        self.level = 1
+        self.exp = 0 
+        self.html = html
+        self.javascript = javascript 
+        self.python = python
 
     # 풀스택 일반 공격
 
     def attack(self, target):
-        damage = random.randint(self.html * 0.5, self.html * 1.5)
+        damage = random.randint(int(self.html * 1.5), int(self.html * 2))
         target.hp = max(target.hp - damage, 0)
         print(f"{self.id}의 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-            self.drop_item()  # 몬스터가 죽으면  드랍
+            target.drop_item(self)  # 몬스터가 죽으면  드랍
+    
     # 풀스택 마법 공격
 
     def magic_attack(self, target):
@@ -172,14 +196,13 @@ class Fullstack(Player):
         if self.mp == 0:
             print("마나가 부족합니다.")
             return
-
-        damage = random.randint(
-            self.javascript + self.python * 0.75, self.javascript + self.python)
+        # self.javascript + self.python * 0.75, self.javascript + self.python)
+        damage = random.randint(int(self.javascript + self.python * 0.75), int(self.javascript + self.python))
         target.hp = max(target.hp - damage, 0)
         print(f"{self.id}의 장고 공격! {target.id}에게 {damage}의 마법데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
-            self.drop_item()  # 몬스터가 죽으면  드랍
+            target.drop_item(self)  # 몬스터가 죽으면  드랍
 
 # front = Frontend(Player)()
 
@@ -228,7 +251,7 @@ class Monster():
         self.exp = exp
 
     def attack(self, target):  # 몬스터 데미지 80%~ 120% 변경
-        damage = random.randint(self.power * 0.8, self.power * 1.2)
+        damage = random.randint(int(self.power * 0.8), int(self.power * 1.2))
         target.hp = max(target.hp - damage, 0)
         print(f"{self.id}의 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
@@ -253,14 +276,15 @@ class Monster():
         exp_gain = monster.exp
         return exp_gain
 
-    def drop_item(self):  # 몬스터가 죽으면 드랍 아이템 , 확률
+    def drop_item(self, player):  # 몬스터가 죽으면 드랍 아이템 , 확률
         items = ['RedPortion', 'BluePortion', 'MacBook',
                  'Keyboard', 'Mouse', 'ChatGpt']  # 드랍 아이템 종류
         probabilities = [0.2, 0.2, 0.15, 0.15, 0.15, 0.15]  # 드랍 확률
 
         for i in range(len(items)):
             if random.random() < probabilities[i]:
-                print(f"{self.id}이(가) {items[i]}을(를) 떨어뜨렸습니다.")
+                # 0330 혀나님
+                print(f"{player.id}이(가) {items[i]}을(를) 획득하였습니다.")
                 return items[i]
         return None
 
@@ -271,26 +295,6 @@ class Monster():
 # 타운과 던전이 몬스터 플레이어 상속받아야할 듯
 
 
-class Town(Player, Monster):
-    def __init__(self, town_name, dungeon_name):
-        self.town_name = town_name
-        self.dungeon_name = dungeon_name
-
-    def show_status(self):
-
-        print(f"""
-            <<{self.id}의 상태>>
-            HP {self.hp}/{self.max_hp}
-            MP{self.mp}/{self.max_mp}
-            """)
-
-        # print(f"""
-        #     LV : {self.level}
-        #     HP: {self.hp}|{self.max_hp}
-        #     MP: {self.mp}|{self.max_mp}
-        #     EXP : {self.exp}
-        #     Html: {self.html}|Javascript: {self.javascript}|Python:{self.python}
-        #     """)
 
 
 # 마을이 하는 역할
@@ -319,6 +323,29 @@ class Town(Player, Monster):
 # 11. 플레이어가 죽었다면 마을로 돌아간다.
 
 # 밤8시 서경 : 플레이어 > 타운 > 던전 순으로 상속받게 작업할것임
+
+
+class Town(Player, Monster):
+    def __init__(self, town_name, dungeon_name):
+        self.town_name = town_name
+        self.dungeon_name = dungeon_name
+
+    def show_status(self):
+
+        print(f"""
+            <<{self.id}의 상태>>
+            HP {self.hp}/{self.max_hp}
+            MP{self.mp}/{self.max_mp}
+            """)
+
+        # print(f"""
+        #     LV : {self.level}
+        #     HP: {self.hp}|{self.max_hp}
+        #     MP: {self.mp}|{self.max_mp}
+        #     EXP : {self.exp}
+        #     Html: {self.html}|Javascript: {self.javascript}|Python:{self.python}
+        #     """)
+
 
 ### 던전 클래스 만들어놨는데 불완전합니다~~
 class Dungeon():
@@ -441,10 +468,11 @@ class ChatGpt(Equipment):  # 쥐피티 무기
 
 
 
+# monster > drop item 함수를 inventory 에서 쓰는 방법
 
 # 서경이의 인벤토리
 
-# class Inventory:
+# class Inventory(Monster):
 #     def __init__(self):
 #         self.items = []
 
@@ -470,6 +498,25 @@ class ChatGpt(Equipment):  # 쥐피티 무기
 #         for item in self.items:
 #             print(f'{item.name}: {item.quantity}')
 
+
+    #플레이어 클래스에 들어가야함 /// 구별하기위한 isintance 
+    # def use_item(self, item):
+    #     if item in self.inventory.items:
+    #         if isinstance(item, RedPortion):
+    #             item.use_portion()
+    #             self.hp = min(self.max_hp, self.hp + item.hp)
+    #             self.inventory.remove_item(item)
+    #         elif isinstance(item, BluePortion):
+    #             item.use_portion()
+    #             self.mp = min(self.max_mp, self.mp + item.mp)
+    #             self.inventory.remove_item(item)
+    #         elif isinstance(item, Weapon):
+    #             self.equip_weapon(item)
+    #     else:
+    #         print(f"{self.name}의 인벤토리에 {item.name}이(가) 없습니다.")
+
+
+#change_items
 
 # inventory = Inventory()
 
