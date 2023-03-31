@@ -14,9 +14,9 @@ class Player():   # init함수가 받는 인자를 이름만 받도록 변경, �
         self.level = 1
         self.exp = 0
         self.max_exp = 50
-        self.html = random.randint(20, 30)  # 스탯 1. 기본공격
-        self.javascript = random.randint(20, 30)  # 스탯 2.마법공격 - front
-        self.python = random.randint(20, 30)  # 스탯 3. 마법공격 - back
+        self.html = random.randint(20, 10000)  # 스탯 1. 기본공격
+        self.javascript = random.randint(20, 10000)  # 스탯 2.마법공격 - front
+        self.python = random.randint(20, 10000)  # 스탯 3. 마법공격 - back
         print(f"\n{self.id}이(가) 생성 되었습니다.")
         print(f"""
             LV: {self.level}
@@ -135,7 +135,7 @@ class Backend(Player):
     def attack(self, target):
         damage = random.randint(int(self.html * 0.8), int(self.html * 1.3))
         target.hp = max(target.hp - damage, 0)
-        print(f"{self.id}의 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
+        print(f"{self.id}의 서버 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
             target.drop_item(self)  # 몬스터가 죽으면 드랍
@@ -167,7 +167,7 @@ class Fullstack(Player):
         self.max_hp = self.hp
         self.mp = mp
         self.max_mp = self.mp
-        self.level = 1
+        self.level = 9
         self.exp = 0 
         self.max_exp = 50
         self.html = html
@@ -180,7 +180,7 @@ class Fullstack(Player):
     def attack(self, target):
         damage = random.randint(int(self.html * 1.5), int(self.html * 2))
         target.hp = max(target.hp - damage, 0)
-        print(f"{self.id}의 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
+        print(f"{self.id}의 프론트 공격! {target.id}에게 {damage}의 데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
             target.drop_item(self)  # 몬스터가 죽으면  드랍
@@ -196,7 +196,7 @@ class Fullstack(Player):
         # self.javascript + self.python * 0.75, self.javascript + self.python)
         damage = random.randint(int(self.javascript + self.python * 0.75), int(self.javascript + self.python))
         target.hp = max(target.hp - damage, 0)
-        print(f"{self.id}의 장고 공격! {target.id}에게 {damage}의 마법데미지를 입혔습니다.")
+        print(f"{self.id}의 백 공격! {target.id}에게 {damage}의 마법데미지를 입혔습니다.")
         if target.hp == 0:
             print(f"{target.id}이(가) 쓰러졌습니다.")
             target.drop_item(self)  # 몬스터가 죽으면  드랍
